@@ -1,5 +1,6 @@
 package edu.illinois.yasgl;
 
+import java.util.Collections;
 import java.util.Collection;
 import java.util.function.Consumer;
 
@@ -18,15 +19,30 @@ public class DirectedGraph<V> implements Graph<V> {
         this.vertices = vertices;
     }
     
-    public void traverse(Consumer<V> consumer) {
-    }
-
     public Collection<V> getSuccessors(V vertex) {
-        return null;
+        return this.forward.get(vertex);
     }
     
     public Collection<V> getPredecessors(V vertex) {
-        return null;
+        return this.backward.get(vertex);
     }
 
+    public Collection<V> vertexSet() {
+        return Collections.unmodifiableCollection(this.vertices);
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (V v : vertices) {
+
+            sb.append("<");
+            sb.append(v);
+            sb.append(" -> ");
+            sb.append(this.forward.containsKey(v) ? this.forward.get(v) : "{}");
+            sb.append("\n");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 }
