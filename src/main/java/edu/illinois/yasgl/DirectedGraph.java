@@ -9,9 +9,9 @@ import com.google.common.collect.ImmutableMultimap;
 
 public class DirectedGraph<V> implements Graph<V> {
 
-    private ImmutableMultimap<V, V> forward;
-    private ImmutableMultimap<V, V> backward;
-    private Collection<V> vertices;
+    ImmutableMultimap<V, V> forward;
+    ImmutableMultimap<V, V> backward;
+    Collection<V> vertices;
 
     protected DirectedGraph(ImmutableMultimap<V, V> forward, Collection<V> vertices) {
         this.forward = forward;

@@ -11,8 +11,20 @@ import com.google.common.collect.ImmutableSet;
 
 public class DirectedGraphBuilder<V> {
 
-    private ImmutableMultimap.Builder<V, V> forward = ImmutableSetMultimap.builder();
-    private Collection<V> vertices = new HashSet<V>();
+    private final ImmutableMultimap.Builder<V, V> forward = ImmutableSetMultimap.builder();
+    private final Collection<V> vertices = new HashSet<V>();
+    
+    public DirectedGraphBuilder() {
+    }
+    
+    public DirectedGraphBuilder(DirectedGraph<V> g) {
+    	this.vertices.addAll(g.vertices);
+    	for (V pre : g.forward.keys()) {
+    		for (V suc : g.forward.get(pre)) {
+    			this.addEdge(pre, suc);
+    		}
+    	}
+    }
     
     public void addEdge(V vertex1, V vertex2) {
         this.addVertex(vertex1);
@@ -26,7 +38,7 @@ public class DirectedGraphBuilder<V> {
     public DirectedGraph<V> build() {
         ImmutableMultimap<V, V> multi = this.forward.build();
         
-        return new DirectedGraph(multi, ImmutableSet.copyOf(vertices));
+        return new DirectedGraph<V>(multi, ImmutableSet.copyOf(vertices));
     }
 
 }
