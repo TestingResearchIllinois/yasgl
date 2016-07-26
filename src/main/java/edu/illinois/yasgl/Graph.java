@@ -2,6 +2,7 @@ package edu.illinois.yasgl;
 
 import java.util.Collection;
 import java.util.function.Consumer;
+import java.io.Serializable;
 
 public interface Graph<V> extends Serializable {
 
