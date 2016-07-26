@@ -2,6 +2,7 @@ package edu.illinois.yasgl;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.io.Serializable;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.ImmutableSet;
@@ -40,7 +41,7 @@ public class LabeledDirectedGraphBuilder<V, E> {
         return new LabeledDirectedGraph<V, E>(multi, ImmutableSet.copyOf(vertices));
     }
     
-    public static class VertexEntry<V, E> {
+    public static class VertexEntry<V, E> implements Serializable{
     	private final V vertex;
     	private final E edge;
     	
