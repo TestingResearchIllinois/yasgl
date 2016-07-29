@@ -63,8 +63,19 @@ public class LabeledDirectedGraphBuilder<V, E> {
 		}
 		
 		public String toString() {
-			return "(" + this.vertex + ":" + this.edge + ")";
-			
+			return "(" + this.vertex + ":" + this.edge + ")";	
+		}
+		
+		public int hashCode() {
+			return vertex.hashCode() + edge.hashCode();
+		}
+		
+		public boolean equals(Object o) {
+			if (o instanceof VertexEntry) {
+				VertexEntry<V, E> casted = (VertexEntry<V, E>)o;
+				return this == casted || (this.vertex.equals(casted.vertex) && this.edge.equals(casted.edge));
+			}
+			return false;
 		}
     }
 }
