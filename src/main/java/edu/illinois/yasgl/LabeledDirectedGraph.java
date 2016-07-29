@@ -36,7 +36,7 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
 
 	@Override
 	public Collection<V> getPredecessors(V vertex) {
-		return this.forward.get(vertex).stream().map(x -> x.getVertex()).collect(Collectors.toSet());
+		return this.backward.get(vertex).stream().map(x -> x.getVertex()).collect(Collectors.toSet());
 	}
 
 	public Collection<VertexEntry<V, E>> getLabeledSuccessors(V vertex) {
@@ -44,7 +44,7 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
 	}
 
 	public Collection<VertexEntry<V, E>> getLabeledPredecessors(V vertex) {
-		return this.forward.get(vertex);
+		return this.backward.get(vertex);
 	}
 
 	@Override
