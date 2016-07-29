@@ -2,6 +2,9 @@ package edu.illinois.yasgl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -10,6 +13,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
 
 import edu.illinois.yasgl.LabeledDirectedGraphBuilder.VertexEntry;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class LabeledDirectedGraph <V, E> implements Graph<V>{
 
@@ -67,4 +71,18 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
         sb.append("]");
         return sb.toString();
     }
+
+	@Override
+	public int hashCode() {
+		return this.vertices.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof LabeledDirectedGraph) {
+			LabeledDirectedGraph casted = (LabeledDirectedGraph)o;
+			return o == casted || (this.vertices.equals(casted) && this.forward.equals(casted) && this.backward.equals(casted));
+		}
+		return false;
+	}
 }
