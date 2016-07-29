@@ -9,7 +9,9 @@ import com.google.common.collect.ImmutableMultimap;
 
 public class DirectedGraph<V> implements Graph<V> {
 
-    final ImmutableMultimap<V, V> forward;
+	private static final long serialVersionUID = -3303603645240328439L;
+
+	final ImmutableMultimap<V, V> forward;
     final ImmutableMultimap<V, V> backward;
     final Collection<V> vertices;
 

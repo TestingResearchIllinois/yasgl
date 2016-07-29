@@ -13,6 +13,8 @@ import edu.illinois.yasgl.LabeledDirectedGraphBuilder.VertexEntry;
 
 public class LabeledDirectedGraph <V, E> implements Graph<V>{
 
+	private static final long serialVersionUID = 4772562024828519617L;
+
 	final ImmutableMultimap<V, VertexEntry<V, E>> forward;
     final ImmutableMultimap<V, VertexEntry<V, E>> backward;
     final Collection<V> vertices;
