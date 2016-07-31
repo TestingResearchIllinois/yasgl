@@ -13,7 +13,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
 
 import edu.illinois.yasgl.LabeledDirectedGraphBuilder.VertexEntry;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class LabeledDirectedGraph <V, E> implements Graph<V>{
 
