@@ -16,28 +16,27 @@ public class DFSTask<V> implements Runnable {
 		this.graph = graph;
 		this.resultsMap = results;
 	}
-	
+
 	public void run() {
-		vertices.parallelStream().forEach(vertex -> this.dfs(vertex));
+		vertices.stream().forEach(vertex -> this.dfs(vertex));
 	}
-	
+
 	private Set<V> dfs(V vertex) {
-		if (this.resultsMap.putIfAbsent(vertex, Collections.newSetFromMap(new ConcurrentHashMap<V, Boolean>())) != null) {
+		if (this.resultsMap.putIfAbsent(vertex,
+				Collections.newSetFromMap(new ConcurrentHashMap<V, Boolean>())) != null) {
 			Set<V> result = this.resultsMap.get(vertex);
-			while(!result.contains(vertex)) {
-				try {
-					result.wait(100);
-				} catch (InterruptedException e) { }
-			}
 			return result;
-			
+
 		}
-		this.graph.getSuccessors(vertex).parallelStream().forEach(v-> this.resultsMap.get(vertex).addAll(dfs(v)));
+
+		this.graph.getSuccessors(vertex).stream().forEach(v -> {
+			this.resultsMap.get(vertex).addAll(dfs(v));
+			this.resultsMap.get(vertex).add(v);
+		});
 
 		this.resultsMap.get(vertex).add(vertex);
 
 		Set<V> result = this.resultsMap.get(vertex);
-		result.notifyAll();
 		return this.resultsMap.get(vertex);
 	}
 }

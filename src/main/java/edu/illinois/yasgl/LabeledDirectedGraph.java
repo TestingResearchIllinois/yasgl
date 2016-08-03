@@ -31,7 +31,20 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
 		this.backward = backBuilder.build();
 		this.vertices = vertices;
 	}
+	
+	private LabeledDirectedGraph(ImmutableMultimap<V, VertexEntry<V, E>> forward,
+			ImmutableMultimap<V, VertexEntry<V, E>> backward, Collection<V> vertices) {
+		this.forward = forward;
+		this.backward = backward;
+		this.vertices = vertices;
+	}
 
+	@Override
+	public LabeledDirectedGraph<V, E> inverse() {
+		return new LabeledDirectedGraph<V, E>(this.backward, this.forward, this.vertices);
+	}
+
+	
 	@Override
 	public Collection<V> getSuccessors(V vertex) {
 		return this.forward.get(vertex).stream().map(x -> x.getVertex()).collect(Collectors.toSet());

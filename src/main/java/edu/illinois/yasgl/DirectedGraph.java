@@ -21,6 +21,17 @@ public class DirectedGraph<V> implements Graph<V> {
         this.vertices = vertices;
     }
     
+    private DirectedGraph(ImmutableMultimap<V, V> forward, ImmutableMultimap<V, V> backward, Collection<V> vertices) {
+    	this.forward = forward;
+    	this.backward = backward;
+    	this.vertices = vertices;
+    }
+    
+    @Override
+    public DirectedGraph<V> inverse() {
+    	return new DirectedGraph<>(this.backward, this.forward, vertices);
+    }
+    
     public Collection<V> getSuccessors(V vertex) {
         return this.forward.get(vertex);
     }

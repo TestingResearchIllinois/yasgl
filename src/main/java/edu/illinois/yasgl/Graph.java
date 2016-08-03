@@ -10,4 +10,6 @@ public interface Graph<V> extends Serializable {
     public Collection<V> getPredecessors(V vertex);
     public Collection<V> getVertices();
     
+    public Graph<V> inverse();
+    
 }

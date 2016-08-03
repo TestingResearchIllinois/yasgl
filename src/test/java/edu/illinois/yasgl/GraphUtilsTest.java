@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,8 +32,8 @@ public class GraphUtilsTest {
 
 	@Test
 	public void testFTC() {
-		Map<String, Collection<String>> tc = GraphUtils.computeTransitiveClosure(this.g);
-		
+		Map<String, Set<String>> tc = GraphUtils.computeTransitiveClosure(this.g);
+
 		assertEquals("a", new HashSet<>(Arrays.asList("a", "b", "c", "d", "e", "f", "g")), tc.get("a"));
 		assertEquals("b", new HashSet<>(Arrays.asList("b", "c", "d", "f", "g")), tc.get("b"));
 		assertEquals("c", new HashSet<>(Arrays.asList("c", "d")), tc.get("c"));
@@ -45,7 +46,7 @@ public class GraphUtilsTest {
 
 	@Test
 	public void testBTC() {
-		Map<String, Collection<String>> tc = GraphUtils.computeBackwardsTransitiveClosure(this.g);
+		Map<String, Set<String>> tc = GraphUtils.computeBackwardsTransitiveClosure(this.g);
 
 		assertEquals("a", new HashSet<>(Arrays.asList("a")), tc.get("a"));
 		assertEquals("b", new HashSet<>(Arrays.asList("b", "a", "e")), tc.get("b"));
