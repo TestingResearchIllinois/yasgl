@@ -72,15 +72,16 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
 	public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
-        for (V v : vertices) {
-
-            sb.append("<");
-            sb.append(v);
-            sb.append(" -> ");
-            sb.append(this.forward.containsKey(v) ? this.forward.get(v) : "[]");
-            sb.append("\n");
+        for (V key : forward.keys()) {
+        	for (VertexEntry<V, E> val : forward.get(key)) {
+        		sb.append(key);
+        		sb.append("\t");
+        		sb.append(val);
+        		sb.append("\n");
+        	}
         }
-        sb.append("]");
+        sb.append("Verts: ");
+        sb.append(this.getVertices());
         return sb.toString();
     }
 
