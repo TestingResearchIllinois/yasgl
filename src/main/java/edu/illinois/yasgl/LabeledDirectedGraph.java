@@ -63,7 +63,7 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
 	}
 
 	public void writeToFile(Writer sb) throws IOException {
-        for (V key : forward.keys()) {
+        for (V key : this.forward.keySet()) {
         	for (VertexEntry<V, E> val : forward.get(key)) {
         		sb.write(key.toString());
         		sb.write("\t");
@@ -83,16 +83,17 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
 	@Override
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (V key : forward.keys()) {
-        	for (VertexEntry<V, E> val : forward.get(key)) {
-        		sb.append(key);
-        		sb.append("\t");
-        		sb.append(val);
-        		sb.append("\n");
-        	}
+        sb.append("[");
+        for (V v : vertices) {
+
+            sb.append("<");
+            sb.append(v);
+            sb.append(" -> ");
+            sb.append(this.forward.containsKey(v) ? this.forward.get(v) : "[]");
+            sb.append(">");
+            sb.append("\n");
         }
-        sb.append("Verts: ");
-        sb.append(this.getVertices());
+        sb.append("]");
         return sb.toString();
     }
 
