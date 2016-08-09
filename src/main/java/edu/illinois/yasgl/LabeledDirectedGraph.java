@@ -77,7 +77,7 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
             sb.append("<");
             sb.append(v);
             sb.append(" -> ");
-            sb.append(this.forward.containsKey(v) ? this.forward.get(v) : "{}");
+            sb.append(this.forward.containsKey(v) ? this.forward.get(v) : "[]");
             sb.append("\n");
         }
         sb.append("]");

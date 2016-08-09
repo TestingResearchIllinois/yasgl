@@ -63,7 +63,7 @@ public class LabeledDirectedGraphBuilder<V, E> {
 		}
 		
 		public String toString() {
-			return "(" + this.vertex + ":" + this.edge + ")";	
+			return this.vertex + "@" + this.edge;	
 		}
 		
 		public int hashCode() {
