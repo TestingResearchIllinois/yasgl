@@ -1,10 +1,9 @@
 package edu.illinois.yasgl;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -63,6 +62,19 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
 		return this.backward.get(vertex);
 	}
 
+	public void writeToFile(Writer sb) throws IOException {
+        for (V key : forward.keys()) {
+        	for (VertexEntry<V, E> val : forward.get(key)) {
+        		sb.write(key.toString());
+        		sb.write("\t");
+        		sb.write(val.toString());
+        		sb.write("\n");
+        	}
+        }
+        sb.write("Verts: ");
+        sb.write(this.getVertices().toString());
+	}
+	
 	@Override
 	public Collection<V> getVertices() {
 		return Collections.unmodifiableCollection(this.vertices);
@@ -71,7 +83,6 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
 	@Override
 	public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("[");
         for (V key : forward.keys()) {
         	for (VertexEntry<V, E> val : forward.get(key)) {
         		sb.append(key);
