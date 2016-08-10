@@ -54,7 +54,31 @@ public class GraphUtilsTest {
 		assertEquals("d", new HashSet<>(Arrays.asList("a", "b", "c", "d", "e", "f", "g")), tc.get("d"));
 		assertEquals("e", new HashSet<>(Arrays.asList("a", "e")), tc.get("e"));
 		assertEquals("f", new HashSet<>(Arrays.asList("a", "b", "e", "f", "g")), tc.get("f"));
-		assertEquals("f", new HashSet<>(Arrays.asList("a", "b", "e", "f", "g")), tc.get("g"));
+		assertEquals("g", new HashSet<>(Arrays.asList("a", "b", "e", "f", "g")), tc.get("g"));
+	}
+	
+	@Test
+	public void testLongestPaths() {
+		LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
+		builder.addEdge("a", "b", "X");
+		builder.addEdge("b", "c", "X");
+		builder.addEdge("c", "d", "X");
+		builder.addEdge("a", "e", "X");
+		builder.addEdge("e", "b", "X");
+		builder.addEdge("b", "f", "X");
+		builder.addEdge("f", "g", "X");
+		builder.addEdge("f", "d", "X");
+		this.g = builder.build();
+		
+		Map<String, Integer> lengths = GraphUtils.longestPaths(this.g);
+
+		assertEquals("a", lengths.get("a").intValue(), 5);
+		assertEquals("b", lengths.get("b").intValue(), 3);
+		assertEquals("c", lengths.get("c").intValue(), 2);
+		assertEquals("d", lengths.get("d").intValue(), 1);
+		assertEquals("e", lengths.get("e").intValue(), 4);
+		assertEquals("f", lengths.get("f").intValue(), 2);
+		assertEquals("g", lengths.get("g").intValue(), 1);
 	}
 
 }
