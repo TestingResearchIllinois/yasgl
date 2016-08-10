@@ -34,10 +34,9 @@ public class GraphUtils {
 
 		if(!lengths.containsKey(vertex)) {
 			lengths.put(vertex, 0);
-			OptionalInt m = graph.getSuccessors(vertex).stream().mapToInt(v -> longestPaths(v, graph, lengths)).max();
+			OptionalInt optional = graph.getSuccessors(vertex).stream().mapToInt(v -> longestPaths(v, graph, lengths)).max();
 		
-			lengths.put(vertex, m.isPresent() ? m.getAsInt() + 1 : 1);
-			
+			lengths.put(vertex, optional.orElse(0) + 1);
 		}
 		return lengths.get(vertex);
 	}

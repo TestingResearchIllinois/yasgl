@@ -26,7 +26,6 @@ public class DFSTask<V> implements Runnable {
 				Collections.newSetFromMap(new ConcurrentHashMap<V, Boolean>())) != null) {
 			Set<V> result = this.resultsMap.get(vertex);
 			return result;
-
 		}
 
 		this.graph.getSuccessors(vertex).stream().forEach(v -> {
