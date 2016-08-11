@@ -30,33 +30,12 @@ public class DFSTask<V> implements Runnable {
 			V current = worklist.remove();
 			Set<V> currentTc = this.resultsMap.get(current);
 			
-			Set<V> furtherAway = new HashSet<>();
-			
-			for (V v : currentTc) {
-				furtherAway.addAll(this.resultsMap.get(v));
-			}
-			
-			if (currentTc.addAll(furtherAway)) {
+            Set<V> nexts = Collections.newSetFromMap(new ConcurrentHashMap<V, Boolean>());
+            currentTc.parallelStream().map(v -> this.resultsMap.get(v)).forEach(vs -> nexts.addAll(vs));
+
+            if (currentTc.addAll(nexts)) {
 				worklist.add(current);
 			}
 		}
-	}
-
-	private Set<V> dfs(V vertex) {
-		if (this.resultsMap.putIfAbsent(vertex,
-				Collections.newSetFromMap(new ConcurrentHashMap<V, Boolean>())) != null) {
-			Set<V> result = this.resultsMap.get(vertex);
-			return result;
-		}
-
-		this.graph.getSuccessors(vertex).stream().forEach(v -> {
-			this.resultsMap.get(vertex).addAll(dfs(v));
-			this.resultsMap.get(vertex).add(v);
-		});
-
-		this.resultsMap.get(vertex).add(vertex);
-
-		Set<V> result = this.resultsMap.get(vertex);
-		return this.resultsMap.get(vertex);
 	}
 }
