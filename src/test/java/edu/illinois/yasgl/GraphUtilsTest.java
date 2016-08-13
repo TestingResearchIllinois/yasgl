@@ -3,7 +3,6 @@ package edu.illinois.yasgl;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +13,7 @@ import org.junit.Test;
 public class GraphUtilsTest {
 
 	Graph<String> g;
+	Graph<String> g2;
 
 	@Before
 	public void setup() {
@@ -28,6 +28,20 @@ public class GraphUtilsTest {
 		builder.addEdge("g", "f", "X");
 		builder.addEdge("f", "d", "X");
 		this.g = builder.build();
+		
+		builder = new LabeledDirectedGraphBuilder<>();
+		builder.addEdge("a", "c", "X");
+		builder.addEdge("a", "d", "X");
+		builder.addEdge("a", "e", "X");
+		builder.addEdge("b", "c", "X");
+		builder.addEdge("c", "e", "X");
+		builder.addEdge("d", "e", "X");
+		builder.addEdge("f", "e", "X");
+		builder.addEdge("f", "a", "X");
+		builder.addEdge("e", "f", "X");
+		this.g2 = builder.build();
+		
+		
 	}
 
 	@Test
@@ -79,6 +93,12 @@ public class GraphUtilsTest {
 		assertEquals("e", lengths.get("e").intValue(), 4);
 		assertEquals("f", lengths.get("f").intValue(), 2);
 		assertEquals("g", lengths.get("g").intValue(), 1);
+	}
+	
+	@Test
+	public void testPageRank() {
+		
+		System.out.println(GraphUtils.<String>getInstance().pageRank(this.g2));
 	}
 
 }
