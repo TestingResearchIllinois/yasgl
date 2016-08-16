@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -13,13 +14,15 @@ import com.google.common.collect.ImmutableSetMultimap;
 
 import edu.illinois.yasgl.LabeledDirectedGraphBuilder.VertexEntry;
 
-public class LabeledDirectedGraph <V, E> implements Graph<V>{
+public class LabeledDirectedGraph <V, E> implements EdgeLabeledGraph<V, E>{
 
 	private static final long serialVersionUID = 4772562024828519617L;
 
 	final ImmutableMultimap<V, VertexEntry<V, E>> forward;
     final ImmutableMultimap<V, VertexEntry<V, E>> backward;
     final Collection<V> vertices;
+    
+    Collection<E> edges;
     
 	public LabeledDirectedGraph(ImmutableMultimap<V, VertexEntry<V, E>> multi, ImmutableSet<V> vertices) {
 		this.forward = multi;
@@ -109,5 +112,18 @@ public class LabeledDirectedGraph <V, E> implements Graph<V>{
 			return o == casted || (this.vertices.equals(casted) && this.forward.equals(casted) && this.backward.equals(casted));
 		}
 		return false;
+	}
+
+	@Override
+	public Collection<E> getAllLabels() {
+		if (edges == null) {
+			edges = this.vertices.stream()
+					.map(vert -> this.getLabeledSuccessors(vert).stream()
+							.map(vertexEntry -> vertexEntry.getEdge())
+							.collect(Collectors.toSet()))
+					.reduce(new HashSet<>(), (set1, set2) -> {set1.addAll(set2); return set1;});
+			
+		}
+		return edges;
 	}
 }
