@@ -137,7 +137,7 @@ public class LabeledDirectedGraph <V, E> implements EdgeLabeledGraph<V, E>{
 		if (!visited.add(v)) {
 			return;
 		}
-		System.out.println("passed");
+		visitor.visit(v);
 		for (V vert : this.getSuccessors(v)) {
 			this.accept(vert, visitor, visited);
 		}
