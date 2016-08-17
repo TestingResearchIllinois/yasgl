@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -125,5 +126,18 @@ public class LabeledDirectedGraph <V, E> implements EdgeLabeledGraph<V, E>{
 			
 		}
 		return edges;
+	}
+	
+	public void accept(V v, GraphVertexVisitor<V> visitor) {
+		accept(v, visitor, new HashSet<V>());
+	}
+	
+	private void accept(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
+		if (!visited.add(v)) {
+			return;
+		}
+		for (V vert : this.getSuccessors(v)) {
+			this.accept(vert, visitor, visited);
+		}
 	}
 }
