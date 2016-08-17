@@ -129,6 +129,7 @@ public class LabeledDirectedGraph <V, E> implements EdgeLabeledGraph<V, E>{
 	}
 	
 	public void accept(V v, GraphVertexVisitor<V> visitor) {
+		assert this.vertices.contains(v);
 		accept(v, visitor, new HashSet<V>());
 	}
 	
