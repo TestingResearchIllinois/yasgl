@@ -128,18 +128,33 @@ public class LabeledDirectedGraph <V, E> implements EdgeLabeledGraph<V, E>{
 		return edges;
 	}
 	
-	public void accept(V v, GraphVertexVisitor<V> visitor) {
+	public void acceptForward(V v, GraphVertexVisitor<V> visitor) {
 		assert this.vertices.contains(v);
-		accept(v, visitor, new HashSet<V>());
+		acceptForward(v, visitor, new HashSet<V>());
 	}
 	
-	private void accept(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
+	private void acceptForward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
 		if (!visited.add(v)) {
 			return;
 		}
 		visitor.visit(v);
 		for (V vert : this.getSuccessors(v)) {
-			this.accept(vert, visitor, visited);
+			this.acceptForward(vert, visitor, visited);
+		}
+	}
+	
+	public void acceptBackward(V v, GraphVertexVisitor<V> visitor) {
+		assert this.vertices.contains(v);
+		acceptBackward(v, visitor, new HashSet<V>());
+	}
+	
+	private void acceptBackward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
+		if (!visited.add(v)) {
+			return;
+		}
+		visitor.visit(v);
+		for (V vert : this.getPredecessors(v)) {
+			this.acceptBackward(vert, visitor, visited);
 		}
 	}
 }
