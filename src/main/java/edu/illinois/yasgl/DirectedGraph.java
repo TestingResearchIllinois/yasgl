@@ -2,7 +2,9 @@ package edu.illinois.yasgl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -69,5 +71,35 @@ public class DirectedGraph<V> implements Graph<V> {
 		return this.forward.entries().stream()
 				.map(e -> new Edge<V>((V)e.getKey(), (V)e.getValue()))
 				.collect(Collectors.toList());
+	}
+
+	public void acceptForward(V v, GraphVertexVisitor<V> visitor) {
+		assert this.vertices.contains(v);
+		acceptForward(v, visitor, new HashSet<V>());
+	}
+	
+	private void acceptForward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
+		if (!visited.add(v)) {
+			return;
+		}
+		visitor.visit(v);
+		for (V vert : this.getSuccessors(v)) {
+			this.acceptForward(vert, visitor, visited);
+		}
+	}
+	
+	public void acceptBackward(V v, GraphVertexVisitor<V> visitor) {
+		assert this.vertices.contains(v);
+		acceptBackward(v, visitor, new HashSet<V>());
+	}
+	
+	private void acceptBackward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
+		if (!visited.add(v)) {
+			return;
+		}
+		visitor.visit(v);
+		for (V vert : this.getPredecessors(v)) {
+			this.acceptBackward(vert, visitor, visited);
+		}
 	}
 }

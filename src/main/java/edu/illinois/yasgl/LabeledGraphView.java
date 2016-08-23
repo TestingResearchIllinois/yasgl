@@ -77,4 +77,14 @@ public class LabeledGraphView<V,E> implements EdgeLabeledGraph<V, E>{
 	public Collection<Edge<V>> getEdges() {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public void acceptForward(V v, GraphVertexVisitor<V> visitor) {
+		this.underlyingGraph.acceptBackward(v, visitor);
+	}
+
+	@Override
+	public void acceptBackward(V v, GraphVertexVisitor<V> visitor) {
+		this.underlyingGraph.acceptForward(v, visitor);		
+	}
 }
