@@ -15,9 +15,9 @@ public interface Graph<V> extends Serializable {
     
     public Graph<V> inverse();
     
-    public void acceptForward(V v, GraphVertexVisitor<V> visitor);
-    public void acceptForward(Collection<V> v, GraphVertexVisitor<V> visitor);
-	public void acceptBackward(V v, GraphVertexVisitor<V> visitor);
-	public void acceptBackward(Collection<V> v, GraphVertexVisitor<V> visitor);
+    public Set<V> acceptForward(V v, GraphVertexVisitor<V> visitor);
+    public Set<V> acceptForward(Collection<V> v, GraphVertexVisitor<V> visitor);
+	public Set<V> acceptBackward(V v, GraphVertexVisitor<V> visitor);
+	public Set<V> acceptBackward(Collection<V> v, GraphVertexVisitor<V> visitor);
     
 }

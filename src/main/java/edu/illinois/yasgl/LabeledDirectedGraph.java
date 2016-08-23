@@ -129,50 +129,54 @@ public class LabeledDirectedGraph <V, E> implements EdgeLabeledGraph<V, E>{
 		return edges;
 	}
 	
-	public void acceptForward(V v, GraphVertexVisitor<V> visitor) {
+	public Set<V> acceptForward(V v, GraphVertexVisitor<V> visitor) {
 		assert this.vertices.contains(v);
-		acceptForward(v, visitor, new HashSet<V>());
+		return acceptForward(v, visitor, new HashSet<V>());
 	}
 	
-	public void acceptForward(Collection<V> vs, GraphVertexVisitor<V> visitor) {
+	public Set<V> acceptForward(Collection<V> vs, GraphVertexVisitor<V> visitor) {
 		Set<V> visited = new HashSet<V>();	
 		for (V v : vs) {
 			assert this.vertices.contains(v);
 			acceptForward(v, visitor, visited); 
 		}
+		return visited;
 	}
 	
-	private void acceptForward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
+	private Set<V> acceptForward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
 		if (!visited.add(v)) {
-			return;
+			return visited;
 		}
 		visitor.visit(v);
 		for (V vert : this.getSuccessors(v)) {
 			this.acceptForward(vert, visitor, visited);
 		}
+		return visited;
 	}
 	
-	public void acceptBackward(V v, GraphVertexVisitor<V> visitor) {
+	public Set<V> acceptBackward(V v, GraphVertexVisitor<V> visitor) {
 		assert this.vertices.contains(v);
-		acceptBackward(v, visitor, new HashSet<V>());
+		return acceptBackward(v, visitor, new HashSet<V>());
 	}
 	
-	public void acceptBackward(Collection<V> vs, GraphVertexVisitor<V> visitor) {
+	public Set<V> acceptBackward(Collection<V> vs, GraphVertexVisitor<V> visitor) {
 		Set<V> visited = new HashSet<V>();
 		for (V v : vs) {
 			assert this.vertices.contains(v);
 			acceptBackward(v, visitor, visited);
 		}
+		return visited;
 	}
 	
-	private void acceptBackward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
+	private Set<V> acceptBackward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
 		if (!visited.add(v)) {
-			return;
+			return visited;
 		}
 		visitor.visit(v);
 		for (V vert : this.getPredecessors(v)) {
 			this.acceptBackward(vert, visitor, visited);
 		}
+		return visited;
 	}
 
 	public Collection<Edge<V>> getEdges() {
