@@ -1,8 +1,9 @@
 package edu.illinois.yasgl;
 
-import java.util.Collections;
 import java.util.Collection;
-import java.util.function.Consumer;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMultimap;
 
@@ -62,5 +63,11 @@ public class DirectedGraph<V> implements Graph<V> {
 	@Override
 	public Collection<V> getVertices() {
 		return Collections.unmodifiableCollection(this.vertices);
+	}
+	
+	public Collection<Edge<V>> getEdges() {
+		return this.forward.entries().stream()
+				.map(e -> new Edge<V>((V)e.getKey(), (V)e.getValue()))
+				.collect(Collectors.toList());
 	}
 }

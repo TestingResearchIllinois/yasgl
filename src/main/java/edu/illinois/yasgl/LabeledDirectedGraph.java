@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -156,5 +157,11 @@ public class LabeledDirectedGraph <V, E> implements EdgeLabeledGraph<V, E>{
 		for (V vert : this.getPredecessors(v)) {
 			this.acceptBackward(vert, visitor, visited);
 		}
+	}
+
+	public Collection<Edge<V>> getEdges() {
+		return this.forward.entries().stream()
+				.map(e -> new Edge<V>(e.getKey(), e.getValue().getVertex()))
+				.collect(Collectors.toList());
 	}
 }

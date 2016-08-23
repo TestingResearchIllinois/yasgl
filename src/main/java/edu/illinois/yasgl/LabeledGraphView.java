@@ -72,5 +72,9 @@ public class LabeledGraphView<V,E> implements EdgeLabeledGraph<V, E>{
 		return this.underlyingGraph.getAllLabels().stream()
 				.filter(e -> !this.filter.contains(e))
 				.collect(Collectors.toSet());
-		}
+	}
+	
+	public Collection<Edge<V>> getEdges() {
+		throw new UnsupportedOperationException();
+	}
 }
