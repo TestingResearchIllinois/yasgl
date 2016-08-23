@@ -78,6 +78,14 @@ public class DirectedGraph<V> implements Graph<V> {
 		acceptForward(v, visitor, new HashSet<V>());
 	}
 	
+	public void acceptForward(Collection<V> vs, GraphVertexVisitor<V> visitor) {
+		Set<V> visited = new HashSet<V>();	
+		for (V v : vs) {
+			assert this.vertices.contains(v);
+			acceptForward(v, visitor, visited); 
+		}
+	}
+	
 	private void acceptForward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
 		if (!visited.add(v)) {
 			return;
@@ -91,6 +99,14 @@ public class DirectedGraph<V> implements Graph<V> {
 	public void acceptBackward(V v, GraphVertexVisitor<V> visitor) {
 		assert this.vertices.contains(v);
 		acceptBackward(v, visitor, new HashSet<V>());
+	}
+
+	public void acceptBackward(Collection<V> vs, GraphVertexVisitor<V> visitor) {
+		Set<V> visited = new HashSet<V>();
+		for (V v : vs) {
+			assert this.vertices.contains(v);
+			acceptBackward(v, visitor, visited);
+		}
 	}
 	
 	private void acceptBackward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {

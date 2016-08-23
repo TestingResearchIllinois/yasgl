@@ -86,5 +86,14 @@ public class LabeledGraphView<V,E> implements EdgeLabeledGraph<V, E>{
 	@Override
 	public void acceptBackward(V v, GraphVertexVisitor<V> visitor) {
 		this.underlyingGraph.acceptForward(v, visitor);		
+	}@Override
+	
+	public void acceptForward(Collection<V> v, GraphVertexVisitor<V> visitor) {
+		this.underlyingGraph.acceptBackward(v, visitor);
+	}
+
+	@Override
+	public void acceptBackward(Collection<V> v, GraphVertexVisitor<V> visitor) {
+		this.underlyingGraph.acceptForward(v, visitor);		
 	}
 }
