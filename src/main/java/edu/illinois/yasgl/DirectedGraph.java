@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.ImmutableMultimap;
 
 
-public class DirectedGraph<V> implements Graph<V> {
+public class DirectedGraph<V> extends AbstractGraph<V> {
 
 	private static final long serialVersionUID = -3303603645240328439L;
 
@@ -73,53 +73,4 @@ public class DirectedGraph<V> implements Graph<V> {
 				.collect(Collectors.toList());
 	}
 
-	public Set<V> acceptForward(V v, GraphVertexVisitor<V> visitor) {
-		assert this.vertices.contains(v);
-		return acceptForward(v, visitor, new HashSet<V>());
-	}
-	
-	public Set<V> acceptForward(Collection<V> vs, GraphVertexVisitor<V> visitor) {
-		Set<V> visited = new HashSet<V>();	
-		for (V v : vs) {
-			assert this.vertices.contains(v);
-			acceptForward(v, visitor, visited); 
-		}
-		return visited;
-	}
-	
-	private Set<V> acceptForward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
-		if (!visited.add(v)) {
-			return visited;
-		}
-		visitor.visit(v);
-		for (V vert : this.getSuccessors(v)) {
-			this.acceptForward(vert, visitor, visited);
-		}
-		return visited;
-	}
-	
-	public Set<V> acceptBackward(V v, GraphVertexVisitor<V> visitor) {
-		assert this.vertices.contains(v);
-		return acceptBackward(v, visitor, new HashSet<V>());
-	}
-
-	public Set<V> acceptBackward(Collection<V> vs, GraphVertexVisitor<V> visitor) {
-		Set<V> visited = new HashSet<V>();
-		for (V v : vs) {
-			assert this.vertices.contains(v);
-			acceptBackward(v, visitor, visited);
-		}
-		return visited;
-	}
-	
-	private Set<V> acceptBackward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
-		if (!visited.add(v)) {
-			return visited;
-		}
-		visitor.visit(v);
-		for (V vert : this.getPredecessors(v)) {
-			this.acceptBackward(vert, visitor, visited);
-		}
-		return visited;
-	}
 }

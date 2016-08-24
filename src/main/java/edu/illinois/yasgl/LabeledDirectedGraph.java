@@ -16,7 +16,7 @@ import com.google.common.collect.ImmutableSetMultimap;
 
 import edu.illinois.yasgl.LabeledDirectedGraphBuilder.VertexEntry;
 
-public class LabeledDirectedGraph <V, E> implements EdgeLabeledGraph<V, E>{
+public class LabeledDirectedGraph <V, E> extends AbstractGraph<V> implements EdgeLabeledGraph<V, E>{
 
 	private static final long serialVersionUID = 4772562024828519617L;
 
@@ -129,56 +129,6 @@ public class LabeledDirectedGraph <V, E> implements EdgeLabeledGraph<V, E>{
 		return edges;
 	}
 	
-	public Set<V> acceptForward(V v, GraphVertexVisitor<V> visitor) {
-		assert this.vertices.contains(v);
-		return acceptForward(v, visitor, new HashSet<V>());
-	}
-	
-	public Set<V> acceptForward(Collection<V> vs, GraphVertexVisitor<V> visitor) {
-		Set<V> visited = new HashSet<V>();	
-		for (V v : vs) {
-			assert this.vertices.contains(v);
-			acceptForward(v, visitor, visited); 
-		}
-		return visited;
-	}
-	
-	private Set<V> acceptForward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
-		if (!visited.add(v)) {
-			return visited;
-		}
-		visitor.visit(v);
-		for (V vert : this.getSuccessors(v)) {
-			this.acceptForward(vert, visitor, visited);
-		}
-		return visited;
-	}
-	
-	public Set<V> acceptBackward(V v, GraphVertexVisitor<V> visitor) {
-		assert this.vertices.contains(v);
-		return acceptBackward(v, visitor, new HashSet<V>());
-	}
-	
-	public Set<V> acceptBackward(Collection<V> vs, GraphVertexVisitor<V> visitor) {
-		Set<V> visited = new HashSet<V>();
-		for (V v : vs) {
-			assert this.vertices.contains(v);
-			acceptBackward(v, visitor, visited);
-		}
-		return visited;
-	}
-	
-	private Set<V> acceptBackward(V v, GraphVertexVisitor<V> visitor, Set<V> visited) {
-		if (!visited.add(v)) {
-			return visited;
-		}
-		visitor.visit(v);
-		for (V vert : this.getPredecessors(v)) {
-			this.acceptBackward(vert, visitor, visited);
-		}
-		return visited;
-	}
-
 	public Collection<Edge<V>> getEdges() {
 		return this.forward.entries().stream()
 				.map(e -> new Edge<V>(e.getKey(), e.getValue().getVertex()))
