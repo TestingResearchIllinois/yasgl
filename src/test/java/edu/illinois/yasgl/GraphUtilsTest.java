@@ -1,9 +1,11 @@
 package edu.illinois.yasgl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -95,6 +97,82 @@ public class GraphUtilsTest {
 		assertEquals("g", lengths.get("g").intValue(), 1);
 	}
 	
+	@Test
+	public void testComputeAnyPathSimple() {
+		List<String> path = GraphUtils.computeAnyPath(this.g, "a", new HashSet<String>() {
+			{
+				add("d");
+			}});
+		assertEquals("path length should be 4", 4, path.size());
+		assertEquals("path content should be a,b,f,d", "[a, b, f, d]", path.toString());
+
+	}
+	
+	@Test
+	public void testComputeAnyPathLargeGraph() {
+		LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
+		int N = 1000000; // number of nodes
+		for (int i = 0; i < N-1; i++) {
+			builder.addEdge("n" + i, "n" + (i+1), "");
+		}
+		this.g = builder.build();
+		List<String> path = GraphUtils.computeAnyPath(this.g, "n1", new HashSet<String>() {
+			{
+				add("n999999");
+			}});
+		assertTrue(!path.isEmpty());
+	}
+
+	@Test
+	public void testComputeShortestPathSimple() {
+		List<String> path = GraphUtils.computeShortestPath(this.g, "a", new HashSet<String>() {
+			{
+				add("d");
+			}});
+		assertEquals("path length should be 4", 4, path.size());
+		assertEquals("path content should be a,b,c,d", "[a, b, c, d]", path.toString());
+
+	}
+	
+	@Test
+	public void testComputeShortestPathNonexistingElement() {
+		List<String> path = GraphUtils.computeShortestPath(this.g, "a", new HashSet<String>() {
+			{
+				add("y");
+			}});
+		assertEquals("path length should be 0", 0, path.size());
+
+	}
+
+	@Test
+	public void testComputeShortestPathSimple1() {
+		LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
+		builder.addEdge("a", "b", "X");
+		builder.addEdge("b", "c", "X");
+		builder.addEdge("c", "d", "X");
+		builder.addEdge("d", "e", "X");
+		builder.addEdge("e", "f", "X");
+		builder.addEdge("f", "g", "X");
+		builder.addEdge("g", "h", "X");
+		builder.addEdge("h", "i", "X");
+		builder.addEdge("a", "e", "X");
+		builder.addEdge("e", "b", "X");
+		builder.addEdge("b", "f", "X");
+		builder.addEdge("f", "s", "X");
+		builder.addEdge("s", "k", "X");
+		builder.addEdge("k", "i", "X");
+		this.g = builder.build();
+
+		List<String> path = GraphUtils.computeShortestPath(this.g, "a", new HashSet<String>() {
+			{
+				add("d");
+				add("i");
+			}});
+		assertEquals("path length should be 4", 4, path.size());
+		assertEquals("path content should be a,b,c,d", "[a, b, c, d]", path.toString());
+
+	}
+
 	@Test
 	public void testPageRank() {
 		
