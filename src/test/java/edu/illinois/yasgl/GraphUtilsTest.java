@@ -43,6 +43,19 @@ public class GraphUtilsTest {
 		
 		
 	}
+	
+	@Test
+	public void testDiregtedGraphIsNotMultigraph() {
+		DirectedGraphBuilder<String> dgbs = new DirectedGraphBuilder<>();
+		dgbs.addEdge("a", "b");
+		dgbs.addEdge("a", "c");
+		dgbs.addEdge("a", "b");
+		
+		Graph<String> g = dgbs.build();
+		assertEquals(2, g.getEdges().size());
+		assertEquals(3, g.getVertices().size());
+
+	}
 
 	@Test
 	public void testFTC() {
