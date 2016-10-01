@@ -70,7 +70,7 @@ public class DirectedGraph<V> extends AbstractGraph<V> {
 	public Collection<Edge<V>> getEdges() {
 		return this.forward.entries().stream()
 				.map(e -> new Edge<V>((V)e.getKey(), (V)e.getValue()))
-				.collect(Collectors.toList());
+				.collect(Collectors.toSet());
 	}
 
 }
