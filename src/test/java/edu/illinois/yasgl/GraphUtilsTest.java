@@ -37,182 +37,187 @@ import org.junit.Test;
 
 public class GraphUtilsTest {
 
-	Graph<String> g;
-	Graph<String> g2;
+    Graph<String> g;
+    Graph<String> g2;
 
-	@Before
-	public void setup() {
-		LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
-		builder.addEdge("a", "b", "X");
-		builder.addEdge("b", "c", "X");
-		builder.addEdge("c", "d", "X");
-		builder.addEdge("a", "e", "X");
-		builder.addEdge("e", "b", "X");
-		builder.addEdge("b", "f", "X");
-		builder.addEdge("f", "g", "X");
-		builder.addEdge("g", "f", "X");
-		builder.addEdge("f", "d", "X");
-		this.g = builder.build();
-		
-		builder = new LabeledDirectedGraphBuilder<>();
-		builder.addEdge("a", "c", "X");
-		builder.addEdge("a", "d", "X");
-		builder.addEdge("a", "e", "X");
-		builder.addEdge("b", "c", "X");
-		builder.addEdge("c", "e", "X");
-		builder.addEdge("d", "e", "X");
-		builder.addEdge("f", "e", "X");
-		builder.addEdge("f", "a", "X");
-		builder.addEdge("e", "f", "X");
-		this.g2 = builder.build();
-		
-		
-	}
-	
-	@Test
-	public void testDiregtedGraphIsNotMultigraph() {
-		DirectedGraphBuilder<String> dgbs = new DirectedGraphBuilder<>();
-		dgbs.addEdge("a", "b");
-		dgbs.addEdge("a", "c");
-		dgbs.addEdge("a", "b");
-		
-		Graph<String> g = dgbs.build();
-		assertEquals(2, g.getEdges().size());
-		assertEquals(3, g.getVertices().size());
+    @Before
+    public void setup() {
+        LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
+        builder.addEdge("a", "b", "X");
+        builder.addEdge("b", "c", "X");
+        builder.addEdge("c", "d", "X");
+        builder.addEdge("a", "e", "X");
+        builder.addEdge("e", "b", "X");
+        builder.addEdge("b", "f", "X");
+        builder.addEdge("f", "g", "X");
+        builder.addEdge("g", "f", "X");
+        builder.addEdge("f", "d", "X");
+        this.g = builder.build();
 
-	}
+        builder = new LabeledDirectedGraphBuilder<>();
+        builder.addEdge("a", "c", "X");
+        builder.addEdge("a", "d", "X");
+        builder.addEdge("a", "e", "X");
+        builder.addEdge("b", "c", "X");
+        builder.addEdge("c", "e", "X");
+        builder.addEdge("d", "e", "X");
+        builder.addEdge("f", "e", "X");
+        builder.addEdge("f", "a", "X");
+        builder.addEdge("e", "f", "X");
+        this.g2 = builder.build();
 
-	@Test
-	public void testFTC() {
-		Map<String, Set<String>> tc = GraphUtils.computeTransitiveClosure(this.g);
+    }
 
-		assertEquals("a", new HashSet<>(Arrays.asList("a", "b", "c", "d", "e", "f", "g")), tc.get("a"));
-		assertEquals("b", new HashSet<>(Arrays.asList("b", "c", "d", "f", "g")), tc.get("b"));
-		assertEquals("c", new HashSet<>(Arrays.asList("c", "d")), tc.get("c"));
-		assertEquals("d", new HashSet<>(Arrays.asList("d")), tc.get("d"));
-		assertEquals("e", new HashSet<>(Arrays.asList("b", "c", "d", "e", "f", "g")), tc.get("e"));
-		assertEquals("f", new HashSet<>(Arrays.asList("d", "f", "g")), tc.get("f"));
-		assertEquals("g", new HashSet<>(Arrays.asList("d", "f", "g")), tc.get("g"));
-	}
+    @Test
+    public void testDiregtedGraphIsNotMultigraph() {
+        DirectedGraphBuilder<String> dgbs = new DirectedGraphBuilder<>();
+        dgbs.addEdge("a", "b");
+        dgbs.addEdge("a", "c");
+        dgbs.addEdge("a", "b");
 
+        Graph<String> g = dgbs.build();
+        assertEquals(2, g.getEdges().size());
+        assertEquals(3, g.getVertices().size());
 
-	@Test
-	public void testBTC() {
-		Map<String, Set<String>> tc = GraphUtils.computeBackwardsTransitiveClosure(this.g);
+    }
 
-		assertEquals("a", new HashSet<>(Arrays.asList("a")), tc.get("a"));
-		assertEquals("b", new HashSet<>(Arrays.asList("b", "a", "e")), tc.get("b"));
-		assertEquals("c", new HashSet<>(Arrays.asList("b", "a", "c", "e")), tc.get("c"));
-		assertEquals("d", new HashSet<>(Arrays.asList("a", "b", "c", "d", "e", "f", "g")), tc.get("d"));
-		assertEquals("e", new HashSet<>(Arrays.asList("a", "e")), tc.get("e"));
-		assertEquals("f", new HashSet<>(Arrays.asList("a", "b", "e", "f", "g")), tc.get("f"));
-		assertEquals("g", new HashSet<>(Arrays.asList("a", "b", "e", "f", "g")), tc.get("g"));
-	}
-	
-	@Test
-	public void testLongestPaths() {
-		LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
-		builder.addEdge("a", "b", "X");
-		builder.addEdge("b", "c", "X");
-		builder.addEdge("c", "d", "X");
-		builder.addEdge("a", "e", "X");
-		builder.addEdge("e", "b", "X");
-		builder.addEdge("b", "f", "X");
-		builder.addEdge("f", "g", "X");
-		builder.addEdge("f", "d", "X");
-		this.g = builder.build();
-		
-		Map<String, Integer> lengths = GraphUtils.longestPaths(this.g);
+    @Test
+    public void testFTC() {
+        Map<String, Set<String>> tc = GraphUtils.computeTransitiveClosure(this.g);
 
-		assertEquals("a", lengths.get("a").intValue(), 5);
-		assertEquals("b", lengths.get("b").intValue(), 3);
-		assertEquals("c", lengths.get("c").intValue(), 2);
-		assertEquals("d", lengths.get("d").intValue(), 1);
-		assertEquals("e", lengths.get("e").intValue(), 4);
-		assertEquals("f", lengths.get("f").intValue(), 2);
-		assertEquals("g", lengths.get("g").intValue(), 1);
-	}
-	
-	@Test
-	public void testComputeAnyPathSimple() {
-		List<String> path = GraphUtils.computeAnyPath(this.g, "a", new HashSet<String>() {
-			{
-				add("d");
-			}});
-		assertEquals("path length should be 4", 4, path.size());
-		assertEquals("path content should be a,b,f,d", "[a, b, f, d]", path.toString());
+        assertEquals("a", new HashSet<>(Arrays.asList("a", "b", "c", "d", "e", "f", "g")),
+                tc.get("a"));
+        assertEquals("b", new HashSet<>(Arrays.asList("b", "c", "d", "f", "g")), tc.get("b"));
+        assertEquals("c", new HashSet<>(Arrays.asList("c", "d")), tc.get("c"));
+        assertEquals("d", new HashSet<>(Arrays.asList("d")), tc.get("d"));
+        assertEquals("e", new HashSet<>(Arrays.asList("b", "c", "d", "e", "f", "g")), tc.get("e"));
+        assertEquals("f", new HashSet<>(Arrays.asList("d", "f", "g")), tc.get("f"));
+        assertEquals("g", new HashSet<>(Arrays.asList("d", "f", "g")), tc.get("g"));
+    }
 
-	}
-	
-	@Test
-	public void testComputeAnyPathLargeGraph() {
-		LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
-		int N = 1000000; // number of nodes
-		for (int i = 0; i < N-1; i++) {
-			builder.addEdge("n" + i, "n" + (i+1), "");
-		}
-		this.g = builder.build();
-		List<String> path = GraphUtils.computeAnyPath(this.g, "n1", new HashSet<String>() {
-			{
-				add("n999999");
-			}});
-		assertTrue(!path.isEmpty());
-	}
+    @Test
+    public void testBTC() {
+        Map<String, Set<String>> tc = GraphUtils.computeBackwardsTransitiveClosure(this.g);
 
-	@Test
-	public void testComputeShortestPathSimple() {
-		List<String> path = GraphUtils.computeShortestPath(this.g, "a", new HashSet<String>() {
-			{
-				add("d");
-			}});
-		assertEquals("path length should be 4", 4, path.size());
-		assertEquals("path content should be a,b,c,d", "[a, b, c, d]", path.toString());
+        assertEquals("a", new HashSet<>(Arrays.asList("a")), tc.get("a"));
+        assertEquals("b", new HashSet<>(Arrays.asList("b", "a", "e")), tc.get("b"));
+        assertEquals("c", new HashSet<>(Arrays.asList("b", "a", "c", "e")), tc.get("c"));
+        assertEquals("d", new HashSet<>(Arrays.asList("a", "b", "c", "d", "e", "f", "g")),
+                tc.get("d"));
+        assertEquals("e", new HashSet<>(Arrays.asList("a", "e")), tc.get("e"));
+        assertEquals("f", new HashSet<>(Arrays.asList("a", "b", "e", "f", "g")), tc.get("f"));
+        assertEquals("g", new HashSet<>(Arrays.asList("a", "b", "e", "f", "g")), tc.get("g"));
+    }
 
-	}
-	
-	@Test
-	public void testComputeShortestPathNonexistingElement() {
-		List<String> path = GraphUtils.computeShortestPath(this.g, "a", new HashSet<String>() {
-			{
-				add("y");
-			}});
-		assertEquals("path length should be 0", 0, path.size());
+    @Test
+    public void testLongestPaths() {
+        LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
+        builder.addEdge("a", "b", "X");
+        builder.addEdge("b", "c", "X");
+        builder.addEdge("c", "d", "X");
+        builder.addEdge("a", "e", "X");
+        builder.addEdge("e", "b", "X");
+        builder.addEdge("b", "f", "X");
+        builder.addEdge("f", "g", "X");
+        builder.addEdge("f", "d", "X");
+        this.g = builder.build();
 
-	}
+        Map<String, Integer> lengths = GraphUtils.longestPaths(this.g);
 
-	@Test
-	public void testComputeShortestPathSimple1() {
-		LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
-		builder.addEdge("a", "b", "X");
-		builder.addEdge("b", "c", "X");
-		builder.addEdge("c", "d", "X");
-		builder.addEdge("d", "e", "X");
-		builder.addEdge("e", "f", "X");
-		builder.addEdge("f", "g", "X");
-		builder.addEdge("g", "h", "X");
-		builder.addEdge("h", "i", "X");
-		builder.addEdge("a", "e", "X");
-		builder.addEdge("e", "b", "X");
-		builder.addEdge("b", "f", "X");
-		builder.addEdge("f", "s", "X");
-		builder.addEdge("s", "k", "X");
-		builder.addEdge("k", "i", "X");
-		this.g = builder.build();
+        assertEquals("a", lengths.get("a").intValue(), 5);
+        assertEquals("b", lengths.get("b").intValue(), 3);
+        assertEquals("c", lengths.get("c").intValue(), 2);
+        assertEquals("d", lengths.get("d").intValue(), 1);
+        assertEquals("e", lengths.get("e").intValue(), 4);
+        assertEquals("f", lengths.get("f").intValue(), 2);
+        assertEquals("g", lengths.get("g").intValue(), 1);
+    }
 
-		List<String> path = GraphUtils.computeShortestPath(this.g, "a", new HashSet<String>() {
-			{
-				add("d");
-				add("i");
-			}});
-		assertEquals("path length should be 4", 4, path.size());
-		assertEquals("path content should be a,b,c,d", "[a, b, c, d]", path.toString());
+    @Test
+    public void testComputeAnyPathSimple() {
+        List<String> path = GraphUtils.computeAnyPath(this.g, "a", new HashSet<String>() {
+            {
+                add("d");
+            }
+        });
+        assertEquals("path length should be 4", 4, path.size());
+        assertEquals("path content should be a,b,f,d", "[a, b, f, d]", path.toString());
 
-	}
+    }
 
-	@Test
-	public void testPageRank() {
-		
-		System.out.println(GraphUtils.<String>getInstance().pageRank(this.g2));
-	}
+    @Test
+    public void testComputeAnyPathLargeGraph() {
+        LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
+        int N = 1000000; // number of nodes
+        for (int i = 0; i < N - 1; i++) {
+            builder.addEdge("n" + i, "n" + (i + 1), "");
+        }
+        this.g = builder.build();
+        List<String> path = GraphUtils.computeAnyPath(this.g, "n1", new HashSet<String>() {
+            {
+                add("n999999");
+            }
+        });
+        assertTrue(!path.isEmpty());
+    }
+
+    @Test
+    public void testComputeShortestPathSimple() {
+        List<String> path = GraphUtils.computeShortestPath(this.g, "a", new HashSet<String>() {
+            {
+                add("d");
+            }
+        });
+        assertEquals("path length should be 4", 4, path.size());
+        assertEquals("path content should be a,b,c,d", "[a, b, c, d]", path.toString());
+
+    }
+
+    @Test
+    public void testComputeShortestPathNonexistingElement() {
+        List<String> path = GraphUtils.computeShortestPath(this.g, "a", new HashSet<String>() {
+            {
+                add("y");
+            }
+        });
+        assertEquals("path length should be 0", 0, path.size());
+
+    }
+
+    @Test
+    public void testComputeShortestPathSimple1() {
+        LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
+        builder.addEdge("a", "b", "X");
+        builder.addEdge("b", "c", "X");
+        builder.addEdge("c", "d", "X");
+        builder.addEdge("d", "e", "X");
+        builder.addEdge("e", "f", "X");
+        builder.addEdge("f", "g", "X");
+        builder.addEdge("g", "h", "X");
+        builder.addEdge("h", "i", "X");
+        builder.addEdge("a", "e", "X");
+        builder.addEdge("e", "b", "X");
+        builder.addEdge("b", "f", "X");
+        builder.addEdge("f", "s", "X");
+        builder.addEdge("s", "k", "X");
+        builder.addEdge("k", "i", "X");
+        this.g = builder.build();
+
+        List<String> path = GraphUtils.computeShortestPath(this.g, "a", new HashSet<String>() {
+            {
+                add("d");
+                add("i");
+            }
+        });
+        assertEquals("path length should be 4", 4, path.size());
+        assertEquals("path content should be a,b,c,d", "[a, b, c, d]", path.toString());
+
+    }
+
+    @Test
+    public void testPageRank() {
+
+        System.out.println(GraphUtils.<String>getInstance().pageRank(this.g2));
+    }
 
 }
