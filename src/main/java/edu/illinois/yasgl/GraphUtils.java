@@ -52,7 +52,7 @@ public class GraphUtils<V> {
 		return lengths.get(vertex);
 	}
 
-	public static <V> List<V> computeAnyPath(Graph<V> graph, V source, Set<V> destination) {
+	public static <V> List<V> computeAnyPath(Graph<V> graph, V source, Set<V> destinations) {
 		Stack<V> stack = new Stack<V>();
 		stack.push(source);
 		Set<V> visited = new HashSet<V>();
@@ -63,7 +63,7 @@ public class GraphUtils<V> {
 		while (!stack.isEmpty()) {
 			current = stack.pop();
 			
-			if (destination.contains(current))
+			if (destinations.contains(current))
 				break;
 			
 			for (V vertex : graph.getSuccessors(current)) {
@@ -82,19 +82,25 @@ public class GraphUtils<V> {
 		return path;
 	}
 
-	public static <V> int computeDFS(Graph<V> graph, V source, Set<V> destination) {
+	/**
+	 * This method computes one distance from source to destination. This
+	 * distance is used as upper limit when executing depth limited search. If
+	 * it does not find it, it returns 0.
+	 * 
+	 */
+	public static <V> int computeDFS(Graph<V> graph, V source, Set<V> destinations) {
 		Set<V> visited = new HashSet<V>();
 		visited.add(source);
 
-		return computeDFSHelper(graph, source, destination, visited);
+		return computeDFSHelper(graph, source, destinations, visited);
 	}
 
-	private static <V> int computeDFSHelper(Graph<V> graph, V source, Set<V> destination, Set<V> visited) {
-		if (destination.contains(source))
+	private static <V> int computeDFSHelper(Graph<V> graph, V source, Set<V> destinations, Set<V> visited) {
+		if (destinations.contains(source))
 			return 1;
 		for (V vertex : graph.getSuccessors(source)) {
 			if (visited.add(vertex)) {
-				int val = computeDFSHelper(graph, vertex, destination, visited);
+				int val = computeDFSHelper(graph, vertex, destinations, visited);
 				if (val > 0) {
 					return val + 1;
 				}
@@ -103,16 +109,24 @@ public class GraphUtils<V> {
 		return 0;
 
 	}
+	
+	/**
+	 * Computes the shortest path from source to any of the destinations using
+	 * depth limited search. It first needs to obtain limit by running dfs. If
+	 * dfs returns 0, it means there is no path to the destination. If there is
+	 * no path to destination, computeShortestPath returns empty array.
+	 * 
+	 */
 
-	public static <V> List<V> computeShortestPath(Graph<V> graph, V source, Set<V> destination) {
+	public static <V> List<V> computeShortestPath(Graph<V> graph, V source, Set<V> destinations) {
 
-		int maxDepth = computeDFS(graph, source, destination);
+		int maxDepth = computeDFS(graph, source, destinations);
 		LinkedList<V> path = new LinkedList<V>();
 		if (maxDepth == 0)
 			return path;
 
 		for (int i = 0; i < maxDepth; i++) {
-			if (computeLDFS(graph, source, destination, i, path)) {
+			if (computeDepthLimitedDFS(graph, source, destinations, i, path)) {
 				break;
 			}
 		}
@@ -120,10 +134,10 @@ public class GraphUtils<V> {
 		return path;
 	}
 
-	private static <V> boolean computeLDFS(Graph<V> graph, V source, Set<V> destination, int limit,
+	private static <V> boolean computeDepthLimitedDFS(Graph<V> graph, V source, Set<V> destinations, int limit,
 			LinkedList<V> path) {
 
-		if (destination.contains(source)) {
+		if (destinations.contains(source)) {
 			return true;
 		}
 		if (limit <= 0) {
@@ -131,7 +145,7 @@ public class GraphUtils<V> {
 		}
 
 		for (V vertex : graph.getSuccessors(source)) {
-			if (computeLDFS(graph, vertex, destination, limit - 1, path)) {
+			if (computeDepthLimitedDFS(graph, vertex, destinations, limit - 1, path)) {
 				path.addFirst(vertex);
 				return true;
 			}
