@@ -24,5 +24,5 @@ SOFTWARE.
 package edu.illinois.yasgl;
 
 public interface GraphVertexVisitor<V> {
-	public void visit(V v);
+    public void visit(V v);
 }

@@ -29,36 +29,36 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMultimap;
 
-
 public class DirectedGraph<V> extends AbstractGraph<V> {
 
-	private static final long serialVersionUID = -3303603645240328439L;
+    private static final long serialVersionUID = -3303603645240328439L;
 
-	final ImmutableMultimap<V, V> forward;
+    final ImmutableMultimap<V, V> forward;
     final ImmutableMultimap<V, V> backward;
-    final Collection<V> vertices;
+    final Collection<V>           vertices;
 
     protected DirectedGraph(ImmutableMultimap<V, V> forward, Collection<V> vertices) {
         this.forward = forward;
         this.backward = this.forward.inverse();
         this.vertices = vertices;
     }
-    
-    private DirectedGraph(ImmutableMultimap<V, V> forward, ImmutableMultimap<V, V> backward, Collection<V> vertices) {
-    	this.forward = forward;
-    	this.backward = backward;
-    	this.vertices = vertices;
+
+    private DirectedGraph(ImmutableMultimap<V, V> forward, ImmutableMultimap<V, V> backward,
+            Collection<V> vertices) {
+        this.forward = forward;
+        this.backward = backward;
+        this.vertices = vertices;
     }
-    
+
     @Override
     public DirectedGraph<V> inverse() {
-    	return new DirectedGraph<>(this.backward, this.forward, vertices);
+        return new DirectedGraph<>(this.backward, this.forward, vertices);
     }
-    
+
     public Collection<V> getSuccessors(V vertex) {
         return this.forward.get(vertex);
     }
-    
+
     public Collection<V> getPredecessors(V vertex) {
         return this.backward.get(vertex);
     }
@@ -82,15 +82,15 @@ public class DirectedGraph<V> extends AbstractGraph<V> {
         return sb.toString();
     }
 
-	@Override
-	public Collection<V> getVertices() {
-		return Collections.unmodifiableCollection(this.vertices);
-	}
-	
-	public Collection<Edge<V>> getEdges() {
-		return this.forward.entries().stream()
-				.map(e -> new Edge<V>((V)e.getKey(), (V)e.getValue()))
-				.collect(Collectors.toSet());
-	}
+    @Override
+    public Collection<V> getVertices() {
+        return Collections.unmodifiableCollection(this.vertices);
+    }
+
+    public Collection<Edge<V>> getEdges() {
+        return this.forward.entries().stream()
+                .map(e -> new Edge<V>((V) e.getKey(), (V) e.getValue()))
+                .collect(Collectors.toSet());
+    }
 
 }
