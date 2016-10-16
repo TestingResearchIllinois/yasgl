@@ -47,7 +47,7 @@ public class GraphUtils<V> {
         DirectedGraphBuilder<String> builder = new DirectedGraphBuilder<>();
         try (BufferedReader filescan = Files.newBufferedReader(Paths.get(fileName), StandardCharsets.UTF_8);) {
             String line;
-            while ((line = filescan.readLine()) != null){
+            while ((line = filescan.readLine()) != null) {
                 String[] edges = line.split(" ");
                 builder.addEdge(edges[0].trim(), edges[1].trim());
             }
