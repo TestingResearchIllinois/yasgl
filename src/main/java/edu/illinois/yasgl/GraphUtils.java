@@ -23,6 +23,11 @@ SOFTWARE.
 
 package edu.illinois.yasgl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,6 +42,20 @@ import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GraphUtils<V> {
+    
+    public static DirectedGraphBuilder<String> buildDirectedGraphFromFile(String fileName) {
+        DirectedGraphBuilder<String> builder = new DirectedGraphBuilder<>();
+        try (BufferedReader filescan = Files.newBufferedReader(Paths.get(fileName), StandardCharsets.UTF_8);) {
+            String line;
+            while ((line = filescan.readLine()) != null) {
+                String[] edges = line.split(" ");
+                builder.addEdge(edges[0].trim(), edges[1].trim());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }	
+        return builder;
+    }
 
     public static <V> GraphUtils<V> getInstance() {
         return new GraphUtils<V>();
