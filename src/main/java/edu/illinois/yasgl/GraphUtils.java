@@ -44,19 +44,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class GraphUtils<V> {
     
     public static DirectedGraphBuilder<String> buildDirectedGraphFromFile(String fileName) {
-		DirectedGraphBuilder<String> builder = new DirectedGraphBuilder<>();
-		try (BufferedReader filescan = Files.newBufferedReader(Paths.get(fileName), StandardCharsets.UTF_8);) {
-			String line;
-			while ((line = filescan.readLine()) != null){
-				String[] edges = line.split(" ");
-				builder.addEdge(edges[0].trim(), edges[1].trim());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return builder;
-	}
+        DirectedGraphBuilder<String> builder = new DirectedGraphBuilder<>();
+        try (BufferedReader filescan = Files.newBufferedReader(Paths.get(fileName), StandardCharsets.UTF_8);) {
+            String line;
+            while ((line = filescan.readLine()) != null){
+                String[] edges = line.split(" ");
+                builder.addEdge(edges[0].trim(), edges[1].trim());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }	
+        return builder;
+    }
 
     public static <V> GraphUtils<V> getInstance() {
         return new GraphUtils<V>();
