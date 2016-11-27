@@ -106,7 +106,7 @@ public class LabeledDirectedGraph<V, E> extends AbstractGraph<V> implements Edge
             sb.write(outMap.get(key).toString());
 
             for (VertexEntry<V, E> val : forward.get(key)) {
-                if (!outMap.containsKey(val)) {
+                if (!outMap.containsKey(val.getVertex())) {
                     outMap.put(val.getVertex(), l++);
                 }
 
