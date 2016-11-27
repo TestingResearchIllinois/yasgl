@@ -111,7 +111,7 @@ public class LabeledDirectedGraph<V, E> extends AbstractGraph<V> implements Edge
                 }
 
                 sb.write("\t");
-                sb.write(outMap.get(val).toString());
+                sb.write(outMap.get(val.getVertex()).toString());
             }
             sb.write("\n");
         }
