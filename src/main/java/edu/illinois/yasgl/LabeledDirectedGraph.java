@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -92,6 +93,28 @@ public class LabeledDirectedGraph<V, E> extends AbstractGraph<V> implements Edge
 
     public Collection<VertexEntry<V, E>> getLabeledPredecessors(V vertex) {
         return this.backward.get(vertex);
+    }
+
+    // creates things for the format of LongLongNullTextInputFormat 
+    public void toGiraphString(Map<V, Long> outMap, Writer sb) throws IOException {
+        Long l = 0L;
+        for (V key : this.forward.keySet()) {
+            if (!outMap.containsKey(key)) {
+                outMap.put(key, l++);
+            }
+
+            sb.write(outMap.get(key).toString());
+
+            for (VertexEntry<V, E> val : forward.get(key)) {
+                if (!outMap.containsKey(val)) {
+                    outMap.put(val.getVertex(), l++);
+                }
+
+                sb.write("\t");
+                sb.write(outMap.get(val).toString());
+            }
+            sb.write("\n");
+        }
     }
 
     public void writeToFile(Writer sb) throws IOException {
