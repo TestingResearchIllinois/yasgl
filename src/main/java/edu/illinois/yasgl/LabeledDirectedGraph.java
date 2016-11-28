@@ -98,7 +98,7 @@ public class LabeledDirectedGraph<V, E> extends AbstractGraph<V> implements Edge
     // creates things for the format of LongLongNullTextInputFormat 
     public void toGiraphString(Map<V, Long> outMap, Writer sb) throws IOException {
         Long l = 0L;
-        for (V key : this.forward.keySet()) {
+        for (V key : this.vertices) {
             if (!outMap.containsKey(key)) {
                 outMap.put(key, l++);
             }
