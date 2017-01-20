@@ -90,4 +90,28 @@ public abstract class AbstractGraph<V> implements Graph<V> {
         }
         return visited;
     }
+
+    // creates things for the format of LongLongNullTextInputFormat
+    public void toGiraphString(Map<V, Long> outMap, Writer sb) throws IOException {
+        // to make sure we don't map to things are already in the map's domain
+        Long l = outMap.values().stream().max(Comparator.<Long>naturalOrder()).orElse(0L);
+
+        for (V key : this.getVertices()) {
+            if (!outMap.containsKey(key)) {
+                outMap.put(key, l++);
+            }
+
+            sb.write(outMap.get(key).toString());
+
+            for (V val : this.getSuccessors(key)) {
+                if (!outMap.containsKey(val)) {
+                    outMap.put(val, l++);
+                }
+
+                sb.write("\t");
+                sb.write(outMap.get(val).toString());
+            }
+            sb.write("\n");
+        }
+    }
 }
