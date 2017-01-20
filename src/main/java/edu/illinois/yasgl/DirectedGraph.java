@@ -147,4 +147,29 @@ public class DirectedGraph<V> extends AbstractGraph<V> {
         }
         return graphBuilder.build();
     }
+
+
+    public static <T> DirectedGraph<T> fromGiraphString(String fileName, Map<Long, T> map) {
+
+        DirectedGraphBuilder<T> graphBuilder = new DirectedGraphBuilder<T>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+
+            String sCurrentLine;
+
+            while ((sCurrentLine = br.readLine()) != null) {
+                long[] tokens = Arrays.stream(sCurrentLine.split("\\s+"))
+                                      .mapToLong(x -> Long.parseLong(x))
+                                      .toArray();
+                graphBuilder.addVertex(map.get(tokens[0]));
+                for (int i = 1; i < tokens.length; i++) {
+                    graphBuilder.addEdge(map.get(tokens[0]), map.get(tokens[i]));
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return graphBuilder.build();
+    }
 }
