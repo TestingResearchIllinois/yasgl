@@ -24,8 +24,7 @@ SOFTWARE.
 package edu.illinois.yasgl;
 
 
-public interface MutableGraph<V, V> {
-
+public interface MutableGraph<V> {
 
     public void addEdge(V v1, V v2);
     public void addVertex(V v);
