@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSetMultimap;
 
@@ -44,27 +44,14 @@ public class LabeledDirectedGraph<V, E> extends AbstractGraph<V> implements Edge
 
     private static final long serialVersionUID = 4772562024828519617L;
 
-    final ImmutableMultimap<V, VertexEntry<V, E>> forward;
-    final ImmutableMultimap<V, VertexEntry<V, E>> backward;
+    final Multimap<V, VertexEntry<V, E>> forward;
+    final Multimap<V, VertexEntry<V, E>> backward;
     final Collection<V>                           vertices;
 
     Collection<E> edges;
 
-    public LabeledDirectedGraph(ImmutableMultimap<V, VertexEntry<V, E>> multi,
-            ImmutableSet<V> vertices) {
-        this.forward = multi;
-        ImmutableMultimap.Builder<V, VertexEntry<V, E>> backBuilder = ImmutableSetMultimap
-                .builder();
-        for (Entry<V, VertexEntry<V, E>> entry : multi.entries()) {
-            backBuilder.put(entry.getValue().getVertex(),
-                    new VertexEntry<>(entry.getKey(), entry.getValue().getEdge()));
-        }
-        this.backward = backBuilder.build();
-        this.vertices = vertices;
-    }
-
-    private LabeledDirectedGraph(ImmutableMultimap<V, VertexEntry<V, E>> forward,
-            ImmutableMultimap<V, VertexEntry<V, E>> backward, Collection<V> vertices) {
+    protected LabeledDirectedGraph(Multimap<V, VertexEntry<V, E>> forward,
+            Multimap<V, VertexEntry<V, E>> backward, Collection<V> vertices) {
         this.forward = forward;
         this.backward = backward;
         this.vertices = vertices;

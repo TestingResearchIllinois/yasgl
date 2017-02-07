@@ -34,23 +34,17 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 
 public class DirectedGraph<V> extends AbstractGraph<V> {
 
     private static final long serialVersionUID = -3303603645240328439L;
 
-    final ImmutableMultimap<V, V> forward;
-    final ImmutableMultimap<V, V> backward;
+    final Multimap<V, V> forward;
+    final Multimap<V, V> backward;
     final Collection<V>           vertices;
 
-    protected DirectedGraph(ImmutableMultimap<V, V> forward, Collection<V> vertices) {
-        this.forward = forward;
-        this.backward = this.forward.inverse();
-        this.vertices = vertices;
-    }
-
-    private DirectedGraph(ImmutableMultimap<V, V> forward, ImmutableMultimap<V, V> backward,
+    protected DirectedGraph(Multimap<V, V> forward, Multimap<V, V> backward,
             Collection<V> vertices) {
         this.forward = forward;
         this.backward = backward;

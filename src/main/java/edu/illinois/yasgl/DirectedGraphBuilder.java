@@ -61,7 +61,7 @@ public class DirectedGraphBuilder<V> {
     public DirectedGraph<V> build() {
         ImmutableMultimap<V, V> multi = this.forward.build();
 
-        return new DirectedGraph<V>(multi, ImmutableSet.copyOf(vertices));
+        return new DirectedGraph<V>(multi, multi.inverse(), ImmutableSet.copyOf(vertices));
     }
 
 }
