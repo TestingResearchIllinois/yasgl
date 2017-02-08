@@ -23,7 +23,11 @@ SOFTWARE.
 
 package edu.illinois.yasgl;
 
-public class Edge<V> {
+import java.io.Serializable;
+
+public class Edge<V> implements Serializable {
+
+    private static final long serialVersionUID = -2193320769746243885L;
 
     private V source;
     private V destination;
