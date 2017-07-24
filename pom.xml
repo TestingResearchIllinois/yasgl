@@ -3,7 +3,7 @@
 
   <groupId>edu.illinois</groupId>
   <artifactId>yasgl</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.3-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>yasgl</name>
@@ -47,40 +47,29 @@
     </pluginManagement>
     <plugins>
       <plugin>
-	<groupId>org.sonatype.plugins</groupId>
-	<artifactId>nexus-staging-maven-plugin</artifactId>
-	<version>1.6.7</version>
-	<extensions>true</extensions>
-	<configuration>
-	  <serverId>ossrh</serverId>
-	  <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-	  <autoReleaseAfterClose>true</autoReleaseAfterClose>
-	</configuration>
+	    <groupId>org.apache.maven.plugins</groupId>
+	    <artifactId>maven-gpg-plugin</artifactId>
+	    <version>1.5</version>
+	    <executions>
+	      <execution>
+	        <id>sign-artifacts</id>
+	        <phase>deploy</phase>
+	        <goals>
+	          <goal>sign</goal>
+	        </goals>
+	      </execution>
+	    </executions>
       </plugin>
       <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-gpg-plugin</artifactId>
-	<version>1.5</version>
-	<executions>
-	  <execution>
-	    <id>sign-artifacts</id>
-	    <phase>deploy</phase>
-	    <goals>
-	      <goal>sign</goal>
-	    </goals>
-	  </execution>
-	</executions>
-      </plugin>
-      <plugin>
-	<groupId>org.sonatype.plugins</groupId>
-	<artifactId>nexus-staging-maven-plugin</artifactId>
-	<version>1.6.7</version>
-	<extensions>true</extensions>
-	<configuration>
-	  <serverId>ossrh</serverId>
-	  <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-	  <autoReleaseAfterClose>true</autoReleaseAfterClose>
-	</configuration>
+	    <groupId>org.sonatype.plugins</groupId>
+	    <artifactId>nexus-staging-maven-plugin</artifactId>
+	    <version>1.6.7</version>
+	    <extensions>true</extensions>
+	    <configuration>
+	      <serverId>ossrh</serverId>
+	      <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+	      <autoReleaseAfterClose>true</autoReleaseAfterClose>
+	    </configuration>
       </plugin>
     </plugins>
   </build>
