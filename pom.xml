@@ -3,7 +3,7 @@
 
   <groupId>edu.illinois</groupId>
   <artifactId>yasgl</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <packaging>jar</packaging>
 
   <name>yasgl</name>
@@ -33,7 +33,7 @@
     <connection>scm:git:git@github.com:TestingResearchIllinois/yasgl.git</connection>
     <developerConnection>scm:git:git@github.com:TestingResearchIllinois/yasgl.git</developerConnection>
     <url>scm:git:git@github.com:TestingResearchIllinois/yasgl.git</url>
-    <tag>HEAD</tag>
+    <tag>yasgl-1.2</tag>
   </scm>
 
   <distributionManagement>
