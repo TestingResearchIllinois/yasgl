@@ -3,7 +3,7 @@
 
   <groupId>edu.illinois</groupId>
   <artifactId>yasgl</artifactId>
-  <version>1.3-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>yasgl</name>
@@ -13,11 +13,27 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Alex Gyori</name>
+      <email>gyori@illinois.edu</email>
+      <organization>University of Illinois at Urbana-Champaign</organization>
+      <organizationUrl>http://mir.cs.illinois.edu/gyori</organizationUrl>
+    </developer>
+  </developers>
+
   <scm>
     <connection>scm:git:git@github.com:TestingResearchIllinois/yasgl.git</connection>
     <developerConnection>scm:git:git@github.com:TestingResearchIllinois/yasgl.git</developerConnection>
     <url>scm:git:git@github.com:TestingResearchIllinois/yasgl.git</url>
-    <tag>yasgl-1.2</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
@@ -81,6 +97,34 @@
           <releaseProfiles>release</releaseProfiles>
           <goals>deploy</goals>
         </configuration>
+      </plugin>
+            <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>install</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.3</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <phase>install</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
