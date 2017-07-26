@@ -27,7 +27,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -220,4 +222,92 @@ public class GraphUtilsTest {
         System.out.println(GraphUtils.<String>getInstance().pageRank(this.g2));
     }
 
+    @Test
+    public void testComputeDFS() {
+        LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
+        builder.addEdge("a", "b", "X");
+        builder.addEdge("b", "c", "X");
+        builder.addEdge("c", "a", "X");
+        builder.addEdge("b", "d", "X");
+        builder.addEdge("d", "e", "X");
+        this.g = builder.build();
+
+	Deque<String> result = GraphUtils.computeDFS(this.g, "b", new HashSet<>(), new LinkedList<>());
+
+	LinkedList<String> expected = new LinkedList<>();
+	expected.push("a");
+	expected.push("c");
+	expected.push("e");
+	expected.push("d");
+	expected.push("b");
+	assertEquals("Stack from DFS is wrong", expected, result);
+    }
+
+    @Test
+    public void testComputeDFSOnDefaultGraph() {
+	Deque<String> result = GraphUtils.computeDFS(this.g2, "a", new HashSet<>(), new LinkedList<>());
+
+	LinkedList<String> expected = new LinkedList<>();
+	expected.push("f");
+	expected.push("e");
+	expected.push("c");
+	expected.push("d");
+	expected.push("a");
+	assertEquals("Stack from DFS is wrong", expected, result);
+    }
+
+    @Test
+    public void testComputeSCCsOnCustomGraph() {
+        LabeledDirectedGraphBuilder<String, String> builder = new LabeledDirectedGraphBuilder<>();
+        builder.addEdge("a", "b", "X");
+        builder.addEdge("b", "c", "X");
+        builder.addEdge("c", "a", "X");
+        builder.addEdge("b", "d", "X");
+        builder.addEdge("d", "e", "X");
+        this.g = builder.build();
+
+	List<List<String>> result = GraphUtils.computeSCC(this.g);
+	List<List<String>> expected = new LinkedList<>();
+
+	expected.add(new LinkedList<String>(){
+		{
+		    add("a");
+		    add("c");
+		    add("b");
+		}
+	    });
+	expected.add(new LinkedList<String>(){
+		{
+		    add("d");
+		}
+	    });
+	expected.add(new LinkedList<String>(){
+		{
+		    add("e");
+		}
+	    });
+	assertEquals("Stack from DFS is wrong", expected, result);
+    }
+
+    @Test
+    public void testComputeSCCsOnDefaultGraph() {
+	List<List<String>> result = GraphUtils.computeSCC(this.g2);
+	List<List<String>> expected = new LinkedList<>();
+
+	expected.add(new LinkedList<String>(){
+		{
+		    add("b");
+		}
+	    });
+	expected.add(new LinkedList<String>(){
+		{
+		    add("a");
+		    add("f");
+		    add("e");
+		    add("d");
+		    add("c");
+		}
+	    });
+	assertEquals("Stack from DFS is wrong", expected, result);
+    }
 }

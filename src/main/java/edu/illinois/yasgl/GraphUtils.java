@@ -29,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -233,6 +234,38 @@ public class GraphUtils<V> {
             pr = newPr;
         }
         return pr;
+    }
+
+    public static <V> List<List<V>> computeSCC(Graph<V> graph) {
+	List<List<V>> sccs = new LinkedList<>();
+	Deque<V> dfsStack = new LinkedList<>();
+	Set<V> visited = new HashSet<>();
+	for (V v : graph.getVertices()) {
+	    computeDFS(graph, v, visited, dfsStack);
+	}
+
+	visited = new HashSet<>();
+	Graph<V> inverse = graph.inverse();
+	while (!dfsStack.isEmpty()) {
+	    V v = dfsStack.pop();
+	    if (!visited.contains(v)) {
+		LinkedList<V> component = new LinkedList<>();
+		computeDFS(inverse, v, visited, component);
+		sccs.add(component);
+	    }
+	}
+	return sccs;
+    }
+
+    public static <V> Deque<V> computeDFS(Graph<V> g, V source, Set<V> visited, Deque<V> result) {
+	if (!visited.contains(source)) {
+	    visited.add(source);
+	    for (V v : g.getSuccessors(source)) {
+		computeDFS(g, v, visited, result);
+	    }
+	    result.push(source);
+	}
+	return result;
     }
 
 }
