@@ -23,41 +23,11 @@ SOFTWARE.
 
 package edu.illinois.yasgl;
 
-import java.io.Serializable;
 
-public class Edge<V> implements Serializable {
+public interface MutableGraph<V> extends Graph<V> {
 
-    private static final long serialVersionUID = -2193320769746243885L;
-
-    private V source;
-    private V destination;
-
-    public Edge(V source, V destination) {
-        this.source = source;
-        this.destination = destination;
-    }
-
-    public V getSource() {
-        return this.source;
-    }
-
-    public V getDestination() {
-        return this.destination;
-    }
-
-    public boolean equals(Object o) {
-        if (o instanceof Edge) {
-            Edge e = (Edge) o;
-            return this.source.equals(e.source) && this.destination.equals(e.destination);
-        }
-        return false;
-    }
-
-    public int hashCode() {
-        return this.source.hashCode() + this.destination.hashCode();
-    }
-
-    public String toString() {
-        return this.source + " --> " + this.destination;
-    }
+    public void addEdge(V v1, V v2);
+    public void addVertex(V v);
+    public void removeEdge(V v1, V v2);
+    public void removeVertex(V v);
 }
